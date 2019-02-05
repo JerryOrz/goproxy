@@ -1,17 +1,17 @@
-<img src="https://github.com/snail007/goproxy/blob/master/docs/images/logo.jpg?raw=true" width="200"/>
+<img src="https://github.com/AntonOrnatskyi/goproxy/blob/master/docs/images/logo.jpg?raw=true" width="200"/>
 Proxy is a high performance HTTP, HTTPS, HTTPS, websocket, TCP, UDP, Socks5, ss proxy server implemented by golang. It supports parent proxy,nat forward,TCP/UDP port forwarding, SSH transfer, TLS encrypted transmission, protocol conversion. you can expose a local server behind a NAT or firewall to the internet, secure DNS proxy.  
 
-[Download](https://github.com/snail007/goproxy/releases) 
+[Download](https://github.com/AntonOrnatskyi/goproxy/releases) 
 
 ---  
   
-[![stable](https://img.shields.io/badge/stable-stable-green.svg)](https://github.com/snail007/goproxy/) [![license](https://img.shields.io/github/license/snail007/goproxy.svg?style=plastic)]() [![download_count](https://img.shields.io/github/downloads/snail007/goproxy/total.svg?style=plastic)](https://github.com/snail007/goproxy/releases) [![download](https://img.shields.io/github/release/snail007/goproxy.svg?style=plastic)](https://github.com/snail007/goproxy/releases)  
+[![stable](https://img.shields.io/badge/stable-stable-green.svg)](https://github.com/AntonOrnatskyi/goproxy/) [![license](https://img.shields.io/github/license/AntonOrnatskyi/goproxy.svg?style=plastic)]() [![download_count](https://img.shields.io/github/downloads/AntonOrnatskyi/goproxy/total.svg?style=plastic)](https://github.com/AntonOrnatskyi/goproxy/releases) [![download](https://img.shields.io/github/release/AntonOrnatskyi/goproxy.svg?style=plastic)](https://github.com/AntonOrnatskyi/goproxy/releases)  
   
 **[中文手册](/README_ZH.md)**  
 
 **[Full-platform graphical interface version](/gui/README.md)**  
 
-**[Full platform SDK](https://github.com/snail007/goproxy-sdk/blob/master/README.md)**
+**[Full platform SDK](https://github.com/AntonOrnatskyi/goproxy-sdk/blob/master/README.md)**
 
 **[GoProxy special authorization](/AUTHORIZATION.md)**
 
@@ -178,7 +178,7 @@ tips:all operations require root permissions.
 #### Quick installation
 #### **0. If your VPS is linux64, you can complete the automatic installation and configuration by the following sentence.**  
 ```shell  
-curl -L https://raw.githubusercontent.com/snail007/goproxy/master/install_auto.sh | bash  
+curl -L https://raw.githubusercontent.com/AntonOrnatskyi/goproxy/master/install_auto.sh | bash  
 ```  
 The installation is completed, the configuration directory is /etc/proxy, For more detailed usage, please refer to the manual above to further understand the functions you want to use.  
 If the installation fails or your VPS is not a linux64 system, please follow the semi-automatic step below:  
@@ -186,23 +186,23 @@ If the installation fails or your VPS is not a linux64 system, please follow the
 #### Manual installation 
 
 #### **1.Download proxy**  
-Download address: https://github.com/snail007/goproxy/releases  
+Download address: https://github.com/AntonOrnatskyi/goproxy/releases  
 ```shell  
 cd /root/proxy/  
-wget https://github.com/snail007/goproxy/releases/download/v6.0/proxy-linux-amd64.tar.gz  
+wget https://github.com/AntonOrnatskyi/goproxy/releases/download/v6.0/proxy-linux-amd64.tar.gz  
 
 ```  
 #### **2.Download the automatic installation script**  
 ```shell  
 cd /root/proxy/  
-wget https://raw.githubusercontent.com/snail007/goproxy/master/install.sh  
+wget https://raw.githubusercontent.com/AntonOrnatskyi/goproxy/master/install.sh  
 chmod +x install.sh  
 ./install.sh  
 ```   
 
 #### Docker installation 
 
-[docker](https://hub.docker.com/r/snail007/goproxy)  
+[docker](https://hub.docker.com/r/AntonOrnatskyi/goproxy)  
 
 Dockerfile root of project uses multistage build and alpine project to comply with best practices. Uses golang 1.10.3 for building as noted in the project README.md and will be pretty small image. total extracted size will be 17.3MB for goproxy latest version.
 
@@ -1276,9 +1276,9 @@ Then the local UDP port 53 provides a security and anti pollution DNS analysis.
 ### How to use the source code?
 
 Recommend go1.10.1.   
-`go get github.com/snail007/goproxy`   
+`go get github.com/AntonOrnatskyi/goproxy`   
 use command cd to enter your go SRC directory   
-then cd to enter `github.com/snail007/goproxy`.    
+then cd to enter `github.com/AntonOrnatskyi/goproxy`.    
 Direct compilation:`go build -o proxy`        
 execution: `go run *.go`       
 `utils` is a toolkit, and `service` is a specific service class.
@@ -1293,7 +1293,7 @@ proxy QQ group: 793015219 , 189618940 (full)
 if proxy help you a lot,you can support us by:
 
 ### AliPay
-<img src="https://github.com/snail007/goproxy/blob/master/docs/images/alipay.jpg?raw=true" width="200"/>
+<img src="https://github.com/AntonOrnatskyi/goproxy/blob/master/docs/images/alipay.jpg?raw=true" width="200"/>
   
 ### Wechat Pay
-<img src="https://github.com/snail007/goproxy/blob/master/docs/images/wxpay.jpg?raw=true" width="200"/>
+<img src="https://github.com/AntonOrnatskyi/goproxy/blob/master/docs/images/wxpay.jpg?raw=true" width="200"/>

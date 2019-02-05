@@ -6,9 +6,9 @@ fi
 mkdir /tmp/proxy
 cd /tmp/proxy
 
-LAST_VERSION=$(curl --silent "https://api.github.com/repos/snail007/goproxy/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')
+LAST_VERSION=$(curl --silent "https://api.github.com/repos/AntonOrnatskyi/goproxy/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')
 
-wget "https://github.com/snail007/goproxy/releases/download/${LAST_VERSION}/proxy-linux-amd64.tar.gz"
+wget "https://github.com/AntonOrnatskyi/goproxy/releases/download/${LAST_VERSION}/proxy-linux-amd64.tar.gz"
 
 # #install proxy
 tar zxvf proxy-linux-amd64.tar.gz

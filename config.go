@@ -1,10 +1,3 @@
-/*
- * @Author: will
- * @Github: https://github.com/willgeek/phalcon-admin
- * @Date: 2019-08-28 19:22:55
- * @LastEditors: will
- * @LastEditTime: 2019-08-28 19:22:55
- */
 package main
 
 import (

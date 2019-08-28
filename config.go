@@ -1,3 +1,10 @@
+/*
+ * @Author: will
+ * @Github: https://github.com/willgeek/phalcon-admin
+ * @Date: 2019-08-28 19:22:55
+ * @LastEditors: will
+ * @LastEditTime: 2019-08-28 19:22:55
+ */
 package main
 
 import (
@@ -15,18 +22,18 @@ import (
 	"strings"
 	"time"
 
-	"github.com/AntonOrnatskyi/goproxy/core/lib/kcpcfg"
-	encryptconn "github.com/AntonOrnatskyi/goproxy/core/lib/transport/encrypt"
-	sdk "github.com/AntonOrnatskyi/goproxy/sdk/android-ios"
-	services "github.com/AntonOrnatskyi/goproxy/services"
-	httpx "github.com/AntonOrnatskyi/goproxy/services/http"
-	keygenx "github.com/AntonOrnatskyi/goproxy/services/keygen"
-	mux "github.com/AntonOrnatskyi/goproxy/services/mux"
-	socksx "github.com/AntonOrnatskyi/goproxy/services/socks"
-	spsx "github.com/AntonOrnatskyi/goproxy/services/sps"
-	tcpx "github.com/AntonOrnatskyi/goproxy/services/tcp"
-	tunnelx "github.com/AntonOrnatskyi/goproxy/services/tunnel"
-	udpx "github.com/AntonOrnatskyi/goproxy/services/udp"
+	"github.com/willgeek/goproxy/core/lib/kcpcfg"
+	encryptconn "github.com/willgeek/goproxy/core/lib/transport/encrypt"
+	sdk "github.com/willgeek/goproxy/sdk/android-ios"
+	services "github.com/willgeek/goproxy/services"
+	httpx "github.com/willgeek/goproxy/services/http"
+	keygenx "github.com/willgeek/goproxy/services/keygen"
+	mux "github.com/willgeek/goproxy/services/mux"
+	socksx "github.com/willgeek/goproxy/services/socks"
+	spsx "github.com/willgeek/goproxy/services/sps"
+	tcpx "github.com/willgeek/goproxy/services/tcp"
+	tunnelx "github.com/willgeek/goproxy/services/tunnel"
+	udpx "github.com/willgeek/goproxy/services/udp"
 	kcp "github.com/xtaci/kcp-go"
 
 	"golang.org/x/crypto/pbkdf2"
@@ -303,7 +310,6 @@ func initConfig() (err error) {
 	spsArgs.LoadBalanceOnlyHA = sps.Flag("lb-onlyha", "use only `high availability mode` to choose parent for LB").Default("false").Bool()
 	spsArgs.RateLimit = sps.Flag("rate-limit", "rate limit (bytes/second) of each connection, such as: 100K 1.5M . 0 means no limitation").Short('l').Default("0").String()
 	spsArgs.Jumper = sps.Flag("jumper", "https or socks5 proxies used when connecting to parent, only worked of -T is tls or tcp, format is https://username:password@host:port https://host:port or socks5://username:password@host:port socks5://host:port").Default("").String()
-	spsArgs.ParentTLSSingle = sps.Flag("parent-tls-single", "conntect to parent insecure skip verify").Default("false").Bool()
 	spsArgs.Debug = isDebug
 
 	//########dns#########

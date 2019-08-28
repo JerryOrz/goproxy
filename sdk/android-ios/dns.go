@@ -13,8 +13,8 @@ import (
 
 	"github.com/miekg/dns"
 	gocache "github.com/pmylund/go-cache"
-	"github.com/AntonOrnatskyi/goproxy/core/lib/kcpcfg"
-	services "github.com/AntonOrnatskyi/goproxy/services"
+	"github.com/willgeek/goproxy/core/lib/kcpcfg"
+	services "github.com/willgeek/goproxy/services"
 )
 
 type DNSArgs struct {

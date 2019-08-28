@@ -7,9 +7,9 @@ import (
 	"runtime/debug"
 	"time"
 
-	"github.com/AntonOrnatskyi/goproxy/utils"
-	goaes "github.com/AntonOrnatskyi/goproxy/utils/aes"
-	"github.com/AntonOrnatskyi/goproxy/utils/socks"
+	"github.com/willgeek/goproxy/utils"
+	goaes "github.com/willgeek/goproxy/utils/aes"
+	"github.com/willgeek/goproxy/utils/socks"
 )
 
 func (s *SPS) RunSSUDP(addr string) (err error) {
@@ -88,7 +88,7 @@ func (s *SPS) RunSSUDP(addr string) (err error) {
 					return
 				}
 
-				client, err := s.HandshakeSocksParent(s.getParentAuth(lbAddr), &outconn, "udp", socksPacket.Addr(), socks.Auth{}, true)
+				client, err := s.HandshakeSocksParent(&outconn, "udp", socksPacket.Addr(), socks.Auth{}, true)
 				if err != nil {
 					clean("handshake fail", fmt.Sprintf("%s", err))
 					return

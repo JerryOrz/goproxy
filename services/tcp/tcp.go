@@ -9,12 +9,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/AntonOrnatskyi/goproxy/core/cs/server"
-	"github.com/AntonOrnatskyi/goproxy/core/lib/kcpcfg"
-	"github.com/AntonOrnatskyi/goproxy/services"
-	"github.com/AntonOrnatskyi/goproxy/utils"
-	"github.com/AntonOrnatskyi/goproxy/utils/jumper"
-	"github.com/AntonOrnatskyi/goproxy/utils/mapx"
+	"github.com/willgeek/goproxy/core/cs/server"
+	"github.com/willgeek/goproxy/core/lib/kcpcfg"
+	"github.com/willgeek/goproxy/services"
+	"github.com/willgeek/goproxy/utils"
+	"github.com/willgeek/goproxy/utils/jumper"
+	"github.com/willgeek/goproxy/utils/mapx"
 
 	"strconv"
 )

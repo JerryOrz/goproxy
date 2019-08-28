@@ -22,8 +22,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/AntonOrnatskyi/goproxy/core/lib/kcpcfg"
-	"github.com/AntonOrnatskyi/goproxy/utils/lb"
+	"github.com/willgeek/goproxy/core/lib/kcpcfg"
+	"github.com/willgeek/goproxy/utils/lb"
 
 	"golang.org/x/crypto/pbkdf2"
 
@@ -31,7 +31,7 @@ import (
 
 	"time"
 
-	"github.com/AntonOrnatskyi/goproxy/utils/id"
+	"github.com/willgeek/goproxy/utils/id"
 
 	kcp "github.com/xtaci/kcp-go"
 )
@@ -122,55 +122,12 @@ func ioCopy(dst io.ReadWriter, src io.ReadWriter) (err error) {
 		}
 	}
 }
-func SingleTlsConnectHost(host string, timeout int, caCertBytes []byte) (conn tls.Conn, err error) {
-	h := strings.Split(host, ":")
-	port, _ := strconv.Atoi(h[1])
-	return SingleTlsConnect(h[0], port, timeout, caCertBytes)
-}
-func SingleTlsConnect(host string, port, timeout int, caCertBytes []byte) (conn tls.Conn, err error) {
-	conf, err := getRequestSingleTlsConfig(caCertBytes)
-	if err != nil {
-		return
-	}
-	_conn, err := net.DialTimeout("tcp", fmt.Sprintf("%s:%d", host, port), time.Duration(timeout)*time.Millisecond)
-	if err != nil {
-		return
-	}
-	return *tls.Client(_conn, conf), err
-}
-func SingleTlsConfig(caCertBytes []byte) (conf *tls.Config, err error) {
-	return getRequestSingleTlsConfig(caCertBytes)
-}
-func getRequestSingleTlsConfig(caCertBytes []byte) (conf *tls.Config, err error) {
-	conf = &tls.Config{InsecureSkipVerify: true}
-	serverCertPool := x509.NewCertPool()
-	if caCertBytes != nil {
-		ok := serverCertPool.AppendCertsFromPEM(caCertBytes)
-		if !ok {
-			err = errors.New("failed to parse root certificate")
-		}
-		conf.RootCAs = serverCertPool
-		conf.VerifyPeerCertificate = func(rawCerts [][]byte, verifiedChains [][]*x509.Certificate) error {
-			opts := x509.VerifyOptions{
-				Roots: serverCertPool,
-			}
-			for _, rawCert := range rawCerts {
-				cert, _ := x509.ParseCertificate(rawCert)
-				_, err := cert.Verify(opts)
-				if err != nil {
-					return err
-				}
-			}
-			return nil
-		}
-	}
-	return
-}
 func TlsConnectHost(host string, timeout int, certBytes, keyBytes, caCertBytes []byte) (conn tls.Conn, err error) {
 	h := strings.Split(host, ":")
 	port, _ := strconv.Atoi(h[1])
 	return TlsConnect(h[0], port, timeout, certBytes, keyBytes, caCertBytes)
 }
+
 func TlsConnect(host string, port, timeout int, certBytes, keyBytes, caCertBytes []byte) (conn tls.Conn, err error) {
 	conf, err := getRequestTlsConfig(certBytes, keyBytes, caCertBytes)
 	if err != nil {

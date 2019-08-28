@@ -12,18 +12,18 @@ import (
 	"strings"
 	"time"
 
-	server "github.com/AntonOrnatskyi/goproxy/core/cs/server"
-	"github.com/AntonOrnatskyi/goproxy/core/lib/kcpcfg"
-	"github.com/AntonOrnatskyi/goproxy/services"
-	"github.com/AntonOrnatskyi/goproxy/utils/datasize"
-	"github.com/AntonOrnatskyi/goproxy/utils/dnsx"
-	"github.com/AntonOrnatskyi/goproxy/utils/iolimiter"
-	"github.com/AntonOrnatskyi/goproxy/utils/jumper"
-	"github.com/AntonOrnatskyi/goproxy/utils/lb"
-	"github.com/AntonOrnatskyi/goproxy/utils/mapx"
+	server "github.com/willgeek/goproxy/core/cs/server"
+	"github.com/willgeek/goproxy/core/lib/kcpcfg"
+	"github.com/willgeek/goproxy/services"
+	"github.com/willgeek/goproxy/utils/datasize"
+	"github.com/willgeek/goproxy/utils/dnsx"
+	"github.com/willgeek/goproxy/utils/iolimiter"
+	"github.com/willgeek/goproxy/utils/jumper"
+	"github.com/willgeek/goproxy/utils/lb"
+	"github.com/willgeek/goproxy/utils/mapx"
 
-	"github.com/AntonOrnatskyi/goproxy/utils"
-	"github.com/AntonOrnatskyi/goproxy/utils/conncrypt"
+	"github.com/willgeek/goproxy/utils"
+	"github.com/willgeek/goproxy/utils/conncrypt"
 
 	"golang.org/x/crypto/ssh"
 )
@@ -210,7 +210,7 @@ func (s *HTTP) InitService() (err error) {
 					return
 				}
 				conn, err := utils.ConnectHost(s.Resolve(s.lb.Select("", *s.cfg.LoadBalanceOnlyHA)), *s.cfg.Timeout*2)
-				if err == nil && conn != nil {
+				if err == nil {
 					conn.SetDeadline(time.Now().Add(time.Millisecond * time.Duration(*s.cfg.Timeout)))
 					_, err = conn.Write([]byte{0})
 					conn.SetDeadline(time.Time{})
@@ -386,17 +386,12 @@ func (s *HTTP) OutToTCP(useProxy bool, address string, inConn *net.Conn, req *ut
 		}
 		if useProxy {
 			// s.log.Printf("%v", s.outPool)
-			if *s.cfg.ParentType == "ssh" {
-				outConn, err = s.getSSHConn(address)
-			} else {
-				selectAddr := (*inConn).RemoteAddr().String()
-				if utils.LBMethod(*s.cfg.LoadBalanceMethod) == lb.SELECT_HASH && *s.cfg.LoadBalanceHashTarget {
-					selectAddr = address
-				}
-				lbAddr = s.lb.Select(selectAddr, *s.cfg.LoadBalanceOnlyHA)
-				outConn, err = s.GetParentConn(lbAddr)
+			selectAddr := (*inConn).RemoteAddr().String()
+			if utils.LBMethod(*s.cfg.LoadBalanceMethod) == lb.SELECT_HASH && *s.cfg.LoadBalanceHashTarget {
+				selectAddr = address
 			}
-
+			lbAddr = s.lb.Select(selectAddr, *s.cfg.LoadBalanceOnlyHA)
+			outConn, err = s.GetParentConn(lbAddr)
 		} else {
 			outConn, err = s.GetDirectConn(s.Resolve(address), inLocalAddr)
 		}
@@ -416,7 +411,7 @@ func (s *HTTP) OutToTCP(useProxy bool, address string, inConn *net.Conn, req *ut
 	if *s.cfg.ParentCompress {
 		outConn = utils.NewCompConn(outConn)
 	}
-	if useProxy && *s.cfg.ParentKey != "" {
+	if *s.cfg.ParentKey != "" {
 		outConn = conncrypt.New(outConn, &conncrypt.Config{
 			Password: *s.cfg.ParentKey,
 		})
@@ -520,9 +515,6 @@ func (s *HTTP) ConnectSSH() (err error) {
 		s.sshClient.Close()
 	}
 	s.sshClient, err = ssh.Dial("tcp", s.Resolve(s.lb.Select("", *s.cfg.LoadBalanceOnlyHA)), &config)
-	if err != nil {
-		s.log.Printf("connect to ssh %s fail", s.cfg.Parent)
-	}
 	<-s.lockChn
 	return
 }

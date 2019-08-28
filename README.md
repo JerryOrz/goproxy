@@ -1,17 +1,16 @@
-<img src="https://github.com/AntonOrnatskyi/goproxy/blob/master/docs/images/logo.jpg?raw=true" width="200"/>
+<img src="https://github.com/willgeek/goproxy/blob/master/docs/images/logo.jpg?raw=true" width="200"/>
 Proxy is a high performance HTTP, HTTPS, HTTPS, websocket, TCP, UDP, Socks5, ss proxy server implemented by golang. It supports parent proxy,nat forward,TCP/UDP port forwarding, SSH transfer, TLS encrypted transmission, protocol conversion. you can expose a local server behind a NAT or firewall to the internet, secure DNS proxy.  
 
-[Download](https://github.com/AntonOrnatskyi/goproxy/releases) 
-
+  
 ---  
   
-[![stable](https://img.shields.io/badge/stable-stable-green.svg)](https://github.com/AntonOrnatskyi/goproxy/) [![license](https://img.shields.io/github/license/AntonOrnatskyi/goproxy.svg?style=plastic)]() [![download_count](https://img.shields.io/github/downloads/AntonOrnatskyi/goproxy/total.svg?style=plastic)](https://github.com/AntonOrnatskyi/goproxy/releases) [![download](https://img.shields.io/github/release/AntonOrnatskyi/goproxy.svg?style=plastic)](https://github.com/AntonOrnatskyi/goproxy/releases)  
+[![stable](https://img.shields.io/badge/stable-stable-green.svg)](https://github.com/willgeek/goproxy/) [![license](https://img.shields.io/github/license/snail007/goproxy.svg?style=plastic)]() [![download_count](https://img.shields.io/github/downloads/snail007/goproxy/total.svg?style=plastic)](https://github.com/willgeek/goproxy/releases) [![download](https://img.shields.io/github/release/snail007/goproxy.svg?style=plastic)](https://github.com/willgeek/goproxy/releases)  
   
 **[中文手册](/README_ZH.md)**  
 
 **[Full-platform graphical interface version](/gui/README.md)**  
 
-**[Full platform SDK](https://github.com/AntonOrnatskyi/goproxy-sdk/blob/master/README.md)**
+**[Full platform SDK](/sdk/README.md)**
 
 **[GoProxy special authorization](/AUTHORIZATION.md)**
 
@@ -178,7 +177,7 @@ tips:all operations require root permissions.
 #### Quick installation
 #### **0. If your VPS is linux64, you can complete the automatic installation and configuration by the following sentence.**  
 ```shell  
-curl -L https://raw.githubusercontent.com/AntonOrnatskyi/goproxy/master/install_auto.sh | bash  
+curl -L https://raw.githubusercontent.com/snail007/goproxy/master/install_auto.sh | bash  
 ```  
 The installation is completed, the configuration directory is /etc/proxy, For more detailed usage, please refer to the manual above to further understand the functions you want to use.  
 If the installation fails or your VPS is not a linux64 system, please follow the semi-automatic step below:  
@@ -186,23 +185,21 @@ If the installation fails or your VPS is not a linux64 system, please follow the
 #### Manual installation 
 
 #### **1.Download proxy**  
-Download address: https://github.com/AntonOrnatskyi/goproxy/releases  
+Download address: https://github.com/willgeek/goproxy/releases  
 ```shell  
 cd /root/proxy/  
-wget https://github.com/AntonOrnatskyi/goproxy/releases/download/v6.0/proxy-linux-amd64.tar.gz  
+wget https://github.com/willgeek/goproxy/releases/download/v6.0/proxy-linux-amd64.tar.gz  
 
 ```  
 #### **2.Download the automatic installation script**  
 ```shell  
 cd /root/proxy/  
-wget https://raw.githubusercontent.com/AntonOrnatskyi/goproxy/master/install.sh  
+wget https://raw.githubusercontent.com/snail007/goproxy/master/install.sh  
 chmod +x install.sh  
 ./install.sh  
-```   
+```  
 
 #### Docker installation 
-
-[docker](https://hub.docker.com/r/AntonOrnatskyi/goproxy)  
 
 Dockerfile root of project uses multistage build and alpine project to comply with best practices. Uses golang 1.10.3 for building as noted in the project README.md and will be pretty small image. total extracted size will be 17.3MB for goproxy latest version.
 
@@ -1089,19 +1086,6 @@ target: if the client is the HTTP (s) proxy request, this represents the complet
 If there is no -a or -F or --auth-url parameters, local authentication is closed.  
 If there is no -A parameter, the connection to the father proxy does not use authentication.  
 
-**Setting up separate authentication information**
-
-If there are many different parent proxys and their passwords are the same or different, then authentication information can be set for each parent proxy.  
-At the same time, a global authentication information can be set with the - A parameter. If a parent proxy does not set the authentication information separately, the global authentication information can be used.  
-Authentication information is written together with parent proxy.  
-format: YTpi#2.2.2.2:33080@1  
-Explain:  
-YTpi is the Authentication information encoded by Base64, For example, http (s)/socks original authentication information, a:b,the user is a and the password is b, which is YTpi after Base64 encoding.   
-if it is ss, A is the encryption method and B is the password, for example, aes-192-cfb:your_pass, which is YWVzLTE5Mi1jZmI6eW91cl9wYXNz after Base64 encoding.  
-\# is an interval symbol. If there is authentication information, there must be #. No authentication information can be omitted #  
-2.2.2.2:33080 is parent proxy's address  
-@1 is weights, Nothing can be omitted. Detailed instructions can be referred to in the manual.***weights***  
-
 #### **6.8 Custom encryption**  
 HTTP(s) proxy can encrypt TCP data by TLS standard encryption and KCP protocol encryption, in addition to supporting custom encryption after TLS and KCP, That is to say, custom encryption and tls|kcp can be combined to use. The internal AES256 encryption is used, and it only needs to define one password by yourself. Encryption is divided into two parts, the one is whether the local (-z) is encrypted and decrypted, the other is whether the parents (-Z) is encrypted and decrypted.
 Custom encryption requires both ends are proxy. Next, we use two level example and three level example as examples:  
@@ -1276,9 +1260,9 @@ Then the local UDP port 53 provides a security and anti pollution DNS analysis.
 ### How to use the source code?
 
 Recommend go1.10.1.   
-`go get github.com/AntonOrnatskyi/goproxy`   
+`go get github.com/willgeek/goproxy`   
 use command cd to enter your go SRC directory   
-then cd to enter `github.com/AntonOrnatskyi/goproxy`.    
+then cd to enter `github.com/willgeek/goproxy`.    
 Direct compilation:`go build -o proxy`        
 execution: `go run *.go`       
 `utils` is a toolkit, and `service` is a specific service class.
@@ -1287,13 +1271,13 @@ execution: `go run *.go`
 Proxy is licensed under GPLv3 license.
 
 ### Contact  
-proxy QQ group: 793015219 , 189618940 (full)
+proxy QQ group: 7930152191 , 189618940 (full)
   
 ### Donation  
 if proxy help you a lot,you can support us by:
 
 ### AliPay
-<img src="https://github.com/AntonOrnatskyi/goproxy/blob/master/docs/images/alipay.jpg?raw=true" width="200"/>
+<img src="https://github.com/willgeek/goproxy/blob/master/docs/images/alipay.jpg?raw=true" width="200"/>
   
 ### Wechat Pay
-<img src="https://github.com/AntonOrnatskyi/goproxy/blob/master/docs/images/wxpay.jpg?raw=true" width="200"/>
+<img src="https://github.com/willgeek/goproxy/blob/master/docs/images/wxpay.jpg?raw=true" width="200"/>

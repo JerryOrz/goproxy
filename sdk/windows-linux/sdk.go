@@ -3,7 +3,7 @@ package main
 import (
 	"C"
 
-	sdk "github.com/AntonOrnatskyi/goproxy/sdk/android-ios"
+	sdk "github.com/willgeek/goproxy/sdk/android-ios"
 )
 
 //export Start
@@ -19,16 +19,6 @@ func Stop(serviceID *C.char) {
 //export Version
 func Version() (ver *C.char) {
 	return C.CString(sdk.Version())
-}
-
-//export StartProfiling
-func StartProfiling(storePath *C.char) {
-	sdk.StartProfiling(C.GoString(storePath))
-}
-
-//export StopProfiling
-func StopProfiling() {
-	sdk.StopProfiling()
 }
 
 func main() {

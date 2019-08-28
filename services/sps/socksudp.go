@@ -7,9 +7,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/AntonOrnatskyi/goproxy/utils"
-	goaes "github.com/AntonOrnatskyi/goproxy/utils/aes"
-	"github.com/AntonOrnatskyi/goproxy/utils/socks"
+	"github.com/willgeek/goproxy/utils"
+	goaes "github.com/willgeek/goproxy/utils/aes"
+	"github.com/willgeek/goproxy/utils/socks"
 )
 
 func (s *SPS) proxyUDP(inConn *net.Conn, serverConn *socks.ServerConn) {
@@ -101,7 +101,7 @@ func (s *SPS) proxyUDP(inConn *net.Conn, serverConn *socks.ServerConn) {
 	s.log.Printf("connect %s for udp", serverConn.Target())
 	//socks client
 
-	client, err := s.HandshakeSocksParent(s.getParentAuth(lbAddr), &outconn, "udp", serverConn.Target(), serverConn.AuthData(), false)
+	client, err := s.HandshakeSocksParent(&outconn, "udp", serverConn.Target(), serverConn.AuthData(), false)
 	if err != nil {
 		clean("handshake fail", fmt.Sprintf("%s", err))
 		return

@@ -10,11 +10,11 @@ import (
 	"strings"
 	"time"
 
-	socks5c "github.com/AntonOrnatskyi/goproxy/core/lib/socks5"
+	socks5c "github.com/willgeek/goproxy/core/lib/socks5"
 )
 
 type BasicAuther interface {
-	CheckUserPass(username, password, userIP, localIP, toTarget string) bool
+	CheckUserPass(username, password, fromIP, ToTarget string) bool
 }
 type Request struct {
 	ver         uint8
@@ -239,16 +239,15 @@ func (s *ServerConn) Target() string {
 }
 func (s *ServerConn) Handshake() (err error) {
 	remoteAddr := (*s.conn).RemoteAddr()
-	localAddr := (*s.conn).LocalAddr()
 	//协商开始
 	//method select request
 	var methodReq MethodsRequest
-	(*s.conn).SetReadDeadline(time.Now().Add(s.timeout))
+	(*s.conn).SetReadDeadline(time.Now().Add(time.Second * s.timeout))
 
 	methodReq, e := NewMethodsRequest((*s.conn), s.header)
 	(*s.conn).SetReadDeadline(time.Time{})
 	if e != nil {
-		(*s.conn).SetReadDeadline(time.Now().Add(s.timeout))
+		(*s.conn).SetReadDeadline(time.Now().Add(time.Second * s.timeout))
 		methodReq.Reply(socks5c.Method_NONE_ACCEPTABLE)
 		(*s.conn).SetReadDeadline(time.Time{})
 		err = fmt.Errorf("new methods request fail,ERR: %s", e)
@@ -265,7 +264,7 @@ func (s *ServerConn) Handshake() (err error) {
 		// }
 		s.method = socks5c.Method_NO_AUTH
 		//method select reply
-		(*s.conn).SetReadDeadline(time.Now().Add(s.timeout))
+		(*s.conn).SetReadDeadline(time.Now().Add(time.Second * s.timeout))
 		err = methodReq.Reply(socks5c.Method_NO_AUTH)
 		(*s.conn).SetReadDeadline(time.Time{})
 		if err != nil {
@@ -276,7 +275,7 @@ func (s *ServerConn) Handshake() (err error) {
 	} else {
 		//auth
 		if !methodReq.Select(socks5c.Method_USER_PASS) {
-			(*s.conn).SetReadDeadline(time.Now().Add(s.timeout))
+			(*s.conn).SetReadDeadline(time.Now().Add(time.Second * s.timeout))
 			methodReq.Reply(socks5c.Method_NONE_ACCEPTABLE)
 			(*s.conn).SetReadDeadline(time.Time{})
 			err = fmt.Errorf("none method found : Method_USER_PASS")
@@ -284,7 +283,7 @@ func (s *ServerConn) Handshake() (err error) {
 		}
 		s.method = socks5c.Method_USER_PASS
 		//method reply need auth
-		(*s.conn).SetReadDeadline(time.Now().Add(s.timeout))
+		(*s.conn).SetReadDeadline(time.Now().Add(time.Second * s.timeout))
 		err = methodReq.Reply(socks5c.Method_USER_PASS)
 		(*s.conn).SetReadDeadline(time.Time{})
 		if err != nil {
@@ -294,7 +293,7 @@ func (s *ServerConn) Handshake() (err error) {
 		//read auth
 		buf := make([]byte, 500)
 		var n int
-		(*s.conn).SetReadDeadline(time.Now().Add(s.timeout))
+		(*s.conn).SetReadDeadline(time.Now().Add(time.Second * s.timeout))
 		n, err = (*s.conn).Read(buf)
 		(*s.conn).SetReadDeadline(time.Time{})
 		if err != nil {
@@ -306,10 +305,9 @@ func (s *ServerConn) Handshake() (err error) {
 		s.password = string(r[2+r[1]+1:])
 		//err = fmt.Errorf("user:%s,pass:%s", user, pass)
 		//auth
-		_userAddr := strings.Split(remoteAddr.String(), ":")
-		_localAddr := strings.Split(localAddr.String(), ":")
-		if s.auth == nil || (*s.auth).CheckUserPass(s.user, s.password, _userAddr[0], _localAddr[0], "") {
-			(*s.conn).SetDeadline(time.Now().Add(s.timeout))
+		_addr := strings.Split(remoteAddr.String(), ":")
+		if s.auth == nil || (*s.auth).CheckUserPass(s.user, s.password, _addr[0], "") {
+			(*s.conn).SetDeadline(time.Now().Add(time.Millisecond * time.Duration(s.timeout)))
 			_, err = (*s.conn).Write([]byte{0x01, 0x00})
 			(*s.conn).SetDeadline(time.Time{})
 			if err != nil {
@@ -317,7 +315,7 @@ func (s *ServerConn) Handshake() (err error) {
 				return
 			}
 		} else {
-			(*s.conn).SetDeadline(time.Now().Add(s.timeout))
+			(*s.conn).SetDeadline(time.Now().Add(time.Millisecond * time.Duration(s.timeout)))
 			_, err = (*s.conn).Write([]byte{0x01, 0x01})
 			(*s.conn).SetDeadline(time.Time{})
 			if err != nil {
@@ -329,7 +327,7 @@ func (s *ServerConn) Handshake() (err error) {
 		}
 	}
 	//request detail
-	(*s.conn).SetReadDeadline(time.Now().Add(s.timeout))
+	(*s.conn).SetReadDeadline(time.Now().Add(time.Second * s.timeout))
 	request, e := NewRequest(*s.conn)
 	(*s.conn).SetReadDeadline(time.Time{})
 	if e != nil {

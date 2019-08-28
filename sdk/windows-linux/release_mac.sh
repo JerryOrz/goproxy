@@ -1,7 +1,7 @@
 #/bin/bash
 VERSION=$(cat ../../VERSION)
 VER="${VERSION}_$(date '+%Y%m%d%H%M%S')"
-X="-X github.com/AntonOrnatskyi/goproxy/sdk/android-ios.SDK_VERSION=$VER -X main.APP_VERSION=$VER"
+X="-X github.com/willgeek/goproxy/sdk/android-ios.SDK_VERSION=$VER -X main.APP_VERSION=$VER"
 TRIMPATH1="/Users/snail/go/src/github.com/snail007"
 TRIMPATH=$(dirname ~/go/src/github.com/snail007)/snail007
 if [ -d "$TRIMPATH1" ];then

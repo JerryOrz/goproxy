@@ -1,17 +1,17 @@
-<img src="https://github.com/AntonOrnatskyi/goproxy/blob/master/docs/images/logo.jpg?raw=true" width="200"/>  
+<img src="https://github.com/willgeek/goproxy/blob/master/docs/images/logo.jpg?raw=true" width="200"/>  
 Proxy是golang实现的高性能http,https,websocket,tcp,udp,socks5,ss代理服务器,支持正向代理、反向代理、透明代理、内网穿透、TCP/UDP端口映射、SSH中转、TLS加密传输、协议转换、防污染DNS代理。
 
-[点击下载](https://github.com/AntonOrnatskyi/goproxy/releases) 官方QQ交流群: 793015219 (2群), 189618940 (1群满)  
+[点击下载](https://github.com/willgeek/goproxy/releases) 官方QQ交流群: 7930152191 (2群), 189618940 (1群满)  
 
 ---  
   
-[![stable](https://img.shields.io/badge/stable-stable-green.svg)](https://github.com/AntonOrnatskyi/goproxy/) [![license](https://img.shields.io/github/license/AntonOrnatskyi/goproxy.svg?style=plastic)]() [![download_count](https://img.shields.io/github/downloads/AntonOrnatskyi/goproxy/total.svg?style=plastic)](https://github.com/AntonOrnatskyi/goproxy/releases) [![download](https://img.shields.io/github/release/AntonOrnatskyi/goproxy.svg?style=plastic)](https://github.com/AntonOrnatskyi/goproxy/releases)  
+[![stable](https://img.shields.io/badge/stable-stable-green.svg)](https://github.com/willgeek/goproxy/) [![license](https://img.shields.io/github/license/snail007/goproxy.svg?style=plastic)]() [![download_count](https://img.shields.io/github/downloads/snail007/goproxy/total.svg?style=plastic)](https://github.com/willgeek/goproxy/releases) [![download](https://img.shields.io/github/release/snail007/goproxy.svg?style=plastic)](https://github.com/willgeek/goproxy/releases)  
   
 **[English Manual](/README.md)**  
 
 **[全平台图形界面版本](/gui/README_ZH.md)**  
 
-**[全平台SDK](https://github.com/AntonOrnatskyi/goproxy-sdk/blob/master/README_ZH.md)**
+**[全平台SDK](/sdk/README_ZH.md)**
 
 **[GoProxy特殊授权](/AUTHORIZATION_ZH.md)**
 
@@ -175,7 +175,7 @@ Proxy是golang实现的高性能http,https,websocket,tcp,udp,socks5,ss代理服�
 #### **0.如果你的VPS是linux64位的系统,那么只需要执行下面一句,就可以完成自动安装和配置.**  
 
 ```shell  
-curl -L https://raw.githubusercontent.com/AntonOrnatskyi/goproxy/master/install_auto.sh | bash  
+curl -L https://raw.githubusercontent.com/snail007/goproxy/master/install_auto.sh | bash  
 ```  
 
 安装完成,配置目录是/etc/proxy,更详细的使用方法请参考上面的手册目录,进一步了解你想要使用的功能.  
@@ -184,27 +184,24 @@ curl -L https://raw.githubusercontent.com/AntonOrnatskyi/goproxy/master/install_
 #### 手动安装  
 
 #### **1.下载proxy**  
-下载地址:https://github.com/AntonOrnatskyi/goproxy/releases/latest   
+下载地址:https://github.com/willgeek/goproxy/releases/latest   
 下面以v6.2为例,如果有最新版,请使用最新版链接.   
 
 ```shell  
 cd /root/proxy/  
-wget https://github.com/AntonOrnatskyi/goproxy/releases/download/v6.2/proxy-linux-amd64.tar.gz  
+wget https://github.com/willgeek/goproxy/releases/download/v6.2/proxy-linux-amd64.tar.gz  
 ```  
 
 #### **2.下载自动安装脚本**  
 
 ```shell  
 cd /root/proxy/  
-wget https://raw.githubusercontent.com/AntonOrnatskyi/goproxy/master/install.sh  
+wget https://raw.githubusercontent.com/snail007/goproxy/master/install.sh  
 chmod +x install.sh  
 ./install.sh  
 ```  
 
 #### Docker安装 
-
-[docker](https://hub.docker.com/r/AntonOrnatskyi/goproxy)  
-
 项目根目录的Dockerfile文件用来构建,使用golang 1.10.3,构建基于goproxy的master分支最新版本,  
 全部大小17.3MB,默认情况下使用master分支,不过可以通过修改配置文件Dockerfile  
 或者使用参数GOPROXY_VERSION指定构建的goproxy版本.  
@@ -369,12 +366,11 @@ weight    根据每个上级的权重和连接数情况,选择出一个上级
 比如:  
 `./proxy http -t tcp -p ":33080" --auth-url "http://test.com/auth.php"`  
 用户连接的时候,proxy会GET方式请求这url("http://test.com/auth.php"),  
-带上user,pass,ip,local_ip,target五个参数:  
-http://test.com/auth.php?user={USER}&pass={PASS}&ip={IP}&local_ip={LOCAL_IP}&target={TARGET}  
+带上user,pass,ip,target四个参数:  
+http://test.com/auth.php?user={USER}&pass={PASS}&ip={IP}&target={TARGET}  
 user:用户名  
 pass:密码  
 ip:用户的IP,比如:192.168.1.200  
-local_ip:用户访问的服务器的IP,比如:3.3.3.3  
 target:用户访问的URL,比如:http://demo.com:80/1.html或https://www.baidu.com:80  
 
 如果没有-a或-F或--auth-url参数,就是关闭Basic认证.   
@@ -919,12 +915,11 @@ SOCKS5代理,支持CONNECT,UDP协议,不支持BIND,支持用户名密码认证.
 比如:  
 `./proxy socks -t tcp -p ":33080" --auth-url "http://test.com/auth.php"`  
 用户连接的时候,proxy会GET方式请求这url("http://test.com/auth.php"),  
-带上user,pass,ip,local_ip四个参数:  
-http://test.com/auth.php?user={USER}&pass={PASS}&ip={IP}&local_ip={LOCAL_IP}  
+带上user,pass,ip,三个参数:  
+http://test.com/auth.php?user={USER}&pass={PASS}&ip={IP}  
 user:用户名  
 pass:密码  
 ip:用户的IP,比如:192.168.1.200  
-local_ip:用户访问的服务器的IP,比如:3.3.3.3   
 
 如果没有-a或-F或--auth-url参数,就是关闭认证.    
 
@@ -1160,18 +1155,6 @@ target:如果客户端是http(s)代理请求,这里代表的是请求的完整ur
 如果没有-a或-F或--auth-url参数,就是关闭本地认证.  
 如果没有-A参数,连接上级不使用认证.  
 
-**设置单独认证信息**
-
-如果存在多个不同上级,而且他们的密码有的一样有的不一样,那么可以针对每个上级设置认证信息,  
-同时还可以用-A参数设置一个全局认证信息,如果某个上级没有单独设置认证信息就使用全局设置的认证信息.  
-认证信息和上级写在一起.  
-格式是: YTpi#2.2.2.2:33080@1  
-说明:  
-YTpi 是经过base64编码的认证信息,比如是http(s)/socks原始认证信息a:b,用户是a密码是b,base64编码之后是:YTpi  
-    如果是ss,那么a就是加密方法,b是密码,比如:aes-192-cfb:your_pass,base64编码之后是:YWVzLTE5Mi1jZmI6eW91cl9wYXNz   
-# 是间隔符号,如果有认证信息,必须有#,没有认证信息可以省略#  
-2.2.2.2:33080 是上级地址  
-@1 是设置权重,没有可以省略,详细说明可以参考手册***权重部分***  
 
 #### **6.8 自定义加密**  
 proxy的sps代理在tcp之上可以通过tls标准加密以及kcp协议加密tcp数据,除此之外还支持在tls和kcp之后进行  
@@ -1375,9 +1358,9 @@ fast3：`--nodelay=1 --interval=10 --resend=2 --nc=1`
 
 ### 如何使用源码?   
 建议go1.10.1.       
-`go get github.com/AntonOrnatskyi/goproxy`   
+`go get github.com/willgeek/goproxy`   
 cd进入你的go src目录  
-cd进入`github.com/AntonOrnatskyi/goproxy`即可.    
+cd进入`github.com/willgeek/goproxy`即可.    
 编译直接:`go build -o proxy`        
 运行: `go run *.go`       
 utils是工具包,service是具体的每个服务类. 
@@ -1385,10 +1368,10 @@ utils是工具包,service是具体的每个服务类.
 ### License  
 Proxy is licensed under GPLv3 license.  
 ### Contact  
-官方QQ交流群: 793015219 (2群), 189618940 (1群满)  
+官方QQ交流群: 7930152191 (2群), 189618940 (1群满)  
   
   
 ### Donation  
 如果proxy帮助你解决了很多问题,你可以通过下面的捐赠更好的支持proxy.  
-<img src="https://github.com/AntonOrnatskyi/goproxy/blob/master/docs/images/alipay.jpg?raw=true" width="200"/>  
-<img src="https://github.com/AntonOrnatskyi/goproxy/blob/master/docs/images/wxpay.jpg?raw=true" width="200"/>  
+<img src="https://github.com/willgeek/goproxy/blob/master/docs/images/alipay.jpg?raw=true" width="200"/>  
+<img src="https://github.com/willgeek/goproxy/blob/master/docs/images/wxpay.jpg?raw=true" width="200"/>  

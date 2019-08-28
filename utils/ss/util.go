@@ -7,7 +7,7 @@ import (
 	"net"
 	"strconv"
 
-	"github.com/AntonOrnatskyi/goproxy/utils"
+	"github.com/willgeek/goproxy/utils"
 )
 
 const leakyBufSize = 4108 // data.len(2) + hmacsha1(10) + data(4096)

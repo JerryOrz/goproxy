@@ -8,21 +8,19 @@ import (
 	"os"
 	"path"
 	"path/filepath"
-	"runtime/pprof"
 	"strings"
-	"sync"
 
-	"github.com/AntonOrnatskyi/goproxy/core/lib/kcpcfg"
-	encryptconn "github.com/AntonOrnatskyi/goproxy/core/lib/transport/encrypt"
-	"github.com/AntonOrnatskyi/goproxy/services"
-	httpx "github.com/AntonOrnatskyi/goproxy/services/http"
-	keygenx "github.com/AntonOrnatskyi/goproxy/services/keygen"
-	mux "github.com/AntonOrnatskyi/goproxy/services/mux"
-	socksx "github.com/AntonOrnatskyi/goproxy/services/socks"
-	spsx "github.com/AntonOrnatskyi/goproxy/services/sps"
-	tcpx "github.com/AntonOrnatskyi/goproxy/services/tcp"
-	tunnelx "github.com/AntonOrnatskyi/goproxy/services/tunnel"
-	udpx "github.com/AntonOrnatskyi/goproxy/services/udp"
+	"github.com/willgeek/goproxy/core/lib/kcpcfg"
+	encryptconn "github.com/willgeek/goproxy/core/lib/transport/encrypt"
+	"github.com/willgeek/goproxy/services"
+	httpx "github.com/willgeek/goproxy/services/http"
+	keygenx "github.com/willgeek/goproxy/services/keygen"
+	mux "github.com/willgeek/goproxy/services/mux"
+	socksx "github.com/willgeek/goproxy/services/socks"
+	spsx "github.com/willgeek/goproxy/services/sps"
+	tcpx "github.com/willgeek/goproxy/services/tcp"
+	tunnelx "github.com/willgeek/goproxy/services/tunnel"
+	udpx "github.com/willgeek/goproxy/services/udp"
 
 	kcp "github.com/xtaci/kcp-go"
 	"golang.org/x/crypto/pbkdf2"
@@ -33,10 +31,6 @@ var SDK_VERSION = "No Version Provided"
 
 var (
 	app *kingpin.Application
-	cpuProfilingFile, memProfilingFile, blockProfilingFile,
-	goroutineProfilingFile, threadcreateProfilingFile *os.File
-	isProfiling   bool
-	profilingLock = &sync.Mutex{}
 )
 
 type LogCallback interface {
@@ -326,7 +320,6 @@ func StartWithLog(serviceID, serviceArgsStr string, loggerCallback LogCallback) 
 	spsArgs.LoadBalanceOnlyHA = sps.Flag("lb-onlyha", "use only `high availability mode` to choose parent for LB").Default("false").Bool()
 	spsArgs.RateLimit = sps.Flag("rate-limit", "rate limit (bytes/second) of each connection, such as: 100K 1.5M . 0 means no limitation").Short('l').Default("0").String()
 	spsArgs.Jumper = sps.Flag("jumper", "https or socks5 proxies used when connecting to parent, only worked of -T is tls or tcp, format is https://username:password@host:port https://host:port or socks5://username:password@host:port socks5://host:port").Default("").String()
-	spsArgs.ParentTLSSingle = sps.Flag("parent-tls-single", "conntect to parent insecure skip verify").Default("false").Bool()
 	spsArgs.Debug = debug
 
 	//########dns#########
@@ -418,7 +411,7 @@ func StartWithLog(serviceID, serviceArgsStr string, loggerCallback LogCallback) 
 	muxClientArgs.KCP = kcpArgs
 	dnsArgs.KCP = kcpArgs
 
-	log := logger.New(os.Stdout, "", logger.Ldate|logger.Ltime)
+	log := logger.New(os.Stderr, "", logger.Ldate|logger.Ltime)
 	flags := logger.Ldate
 	if *debug {
 		flags |= logger.Lshortfile | logger.Lmicroseconds
@@ -483,42 +476,4 @@ func Stop(serviceID string) {
 
 func Version() string {
 	return SDK_VERSION
-}
-func StartProfiling(storePath string) {
-	profilingLock.Lock()
-	defer profilingLock.Unlock()
-	if !isProfiling {
-		isProfiling = true
-		if storePath == "" {
-			storePath = "."
-		}
-		cpuProfilingFile, _ = os.Create(filepath.Join(storePath, "cpu.prof"))
-		memProfilingFile, _ = os.Create(filepath.Join(storePath, "memory.prof"))
-		blockProfilingFile, _ = os.Create(filepath.Join(storePath, "block.prof"))
-		goroutineProfilingFile, _ = os.Create(filepath.Join(storePath, "goroutine.prof"))
-		threadcreateProfilingFile, _ = os.Create(filepath.Join(storePath, "threadcreate.prof"))
-		pprof.StartCPUProfile(cpuProfilingFile)
-	}
-}
-func StopProfiling() {
-	profilingLock.Lock()
-	defer profilingLock.Unlock()
-	if isProfiling {
-		isProfiling = false
-		pprof.StopCPUProfile()
-		goroutine := pprof.Lookup("goroutine")
-		goroutine.WriteTo(goroutineProfilingFile, 1)
-		heap := pprof.Lookup("heap")
-		heap.WriteTo(memProfilingFile, 1)
-		block := pprof.Lookup("block")
-		block.WriteTo(blockProfilingFile, 1)
-		threadcreate := pprof.Lookup("threadcreate")
-		threadcreate.WriteTo(threadcreateProfilingFile, 1)
-		//close
-		goroutineProfilingFile.Close()
-		memProfilingFile.Close()
-		blockProfilingFile.Close()
-		threadcreateProfilingFile.Close()
-	}
-
 }
